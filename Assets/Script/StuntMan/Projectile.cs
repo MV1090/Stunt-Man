@@ -7,9 +7,12 @@ public class Projectile : MonoBehaviour
     
    [SerializeField] float _initialVel;   
    [SerializeField] float _angle;
-   [SerializeField] Aiming _projectileAim;
+    [SerializeField] float _time;
+    [SerializeField] Aiming _projectileAim;
    [SerializeField] Transform _spawnPoint;
-    
+
+    private float angle;
+    private bool isFlying;
     private void Start()
     {
         _projectileAim = GameObject.Find("TrajectoryLine").GetComponent<Aiming>();
@@ -18,30 +21,50 @@ public class Projectile : MonoBehaviour
         _initialVel = _projectileAim._initialVel;
         _angle = _projectileAim._angle;
 
-        float angle = _angle * Mathf.Deg2Rad;
-
-        StopAllCoroutines();
-        StartCoroutine(Movement(_initialVel, angle));
+         angle = _angle * Mathf.Deg2Rad;
+             
 
         Destroy(gameObject, 5);
+
+        isFlying = true;
     }
 
-    
-
-    IEnumerator Movement(float initialVel, float angle)
+    private void FixedUpdate()
     {
-        float t = 0;
-        while (t < 100)
-        {
-            float xPos = initialVel * t * Mathf.Cos(angle);
-            float yPos = initialVel * t * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(t, 2);
-            transform.position = _spawnPoint.position + new Vector3(xPos, yPos, 0);
-            
-            t += Time.deltaTime;
-            yield return null;
-        }
+       _time += Time.deltaTime;
+        //FlightMovement(_initialVel, angle, _time);
+        if (isFlying == true)
+            FlightMovement(_initialVel, angle, _time);
+
+        else
+            SlideMovement(_initialVel, angle, _time);
+    }
+       
+
+    private void FlightMovement(float initialVel, float angle, float time)
+    {             
+        float xPos = initialVel * time * Mathf.Cos(angle);
+        float yPos = initialVel * time * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(time, 2);
+        transform.position = _spawnPoint.position + new Vector3(xPos, yPos, 0);
     }
 
-    
+    private void SlideMovement(float initialVel, float angle, float time)
+    {
+        float xPos = initialVel * time * Mathf.Cos(angle);
+        transform.position = _spawnPoint.position + new Vector3(xPos, 0, 0);
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if(collision.gameObject.tag == "Projectile")
+            return;
+
+        Debug.Log("HasHit");
+        isFlying = false;
+    }
+
+ 
+
+
 
 }

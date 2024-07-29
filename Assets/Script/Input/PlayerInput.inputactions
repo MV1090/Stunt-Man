@@ -56,6 +56,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Shoot",
+            "id": "f4b2c658-c816-4f9a-90c4-2b50d8f701ae",
+            "actions": [
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "39cce3e5-1fbe-4fa9-8c6c-60a8dc9e1907",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "00b37a2e-bbee-487a-9ea5-0b02dbfbb205",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour
  
     PlayerInput input;
     public PauseMenu context;
+    public Shoot cannon;
     public void Awake()
     {
       input = new PlayerInput();
@@ -17,7 +18,7 @@ public class InputManager : MonoBehaviour
     {
        input.Enable();
        input.Pause.Pause.performed += context.Pause;
-       
+        input.Shoot.Fire.performed += cannon.Fire;
     }
 
     private void OnDisable()
