@@ -1,46 +1,62 @@
-using System.Collections;
-using System.Collections.Generic;
+//using System.Numerics;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
-{
-    
-   [SerializeField] float _initialVel;   
-   [SerializeField] float _angle;
+{ 
+    [SerializeField] float _initialVel;   
+    [SerializeField] float _angle;
     [SerializeField] float _time;
-    [SerializeField] Aiming _projectileAim;
-   [SerializeField] Transform _spawnPoint;
+     [SerializeField] float _dragValue;
 
     private float angle;
-    private bool isFlying;
+    private bool isFlying;   
+    private bool hasStopped;
+    
+    Aiming _projectileAim;    
+    Transform _spawnPoint;
+
     private void Start()
-    {
+    {        
         _projectileAim = GameObject.Find("TrajectoryLine").GetComponent<Aiming>();
         _spawnPoint = GameObject.Find("SpawnPoint").GetComponent<Transform>();
 
         _initialVel = _projectileAim._initialVel;
         _angle = _projectileAim._angle;
 
-         angle = _angle * Mathf.Deg2Rad;
-             
+         angle = _angle * Mathf.Deg2Rad;             
 
-        Destroy(gameObject, 5);
+        Destroy(gameObject, 30);
 
         isFlying = true;
+        hasStopped = false;       
+    }
+    void Update()
+    {
+        if (isFlying == false)
+            return;
+        SetFlightRotation();
     }
 
     private void FixedUpdate()
     {
-       _time += Time.deltaTime;
-        //FlightMovement(_initialVel, angle, _time);
-        if (isFlying == true)
-            FlightMovement(_initialVel, angle, _time);
-
+        if (hasStopped == true)
+            return;
         else
-            SlideMovement(_initialVel, angle, _time);
-    }
-       
+        {
+            _time += Time.deltaTime;
 
+            if (isFlying == true)
+            {
+                FlightMovement(_initialVel, angle, _time);                
+            }
+            else
+            {
+                SetSlideRotation();
+                SlideMovement(_initialVel, angle, _time);
+                SetDrag();
+            }
+        }
+    }           
     private void FlightMovement(float initialVel, float angle, float time)
     {             
         float xPos = initialVel * time * Mathf.Cos(angle);
@@ -50,8 +66,35 @@ public class Projectile : MonoBehaviour
 
     private void SlideMovement(float initialVel, float angle, float time)
     {
-        float xPos = initialVel * time * Mathf.Cos(angle);
-        transform.position = _spawnPoint.position + new Vector3(xPos, 0, 0);
+        float xPos = initialVel * time * Mathf.Cos(angle);               
+        Vector3 nextPosition = _spawnPoint.position + new Vector3(xPos, -1.2f, 0);
+        
+        if (nextPosition.x < transform.position.x)
+            hasStopped = true;
+        
+        transform.position = nextPosition;
+    }
+
+    private void SetAnimationTrigger(string trigger)
+    {
+        Animator anim = gameObject.GetComponent<Animator>();
+        anim.SetTrigger(trigger);
+    }
+
+    private void SetDrag()
+    {
+        _initialVel -= Time.deltaTime * _dragValue;
+        _dragValue += Time.deltaTime;        
+    }
+
+    private void SetSlideRotation()
+    {
+        transform.rotation = Quaternion.Euler(_spawnPoint.rotation.x - 0.2f, _spawnPoint.rotation.y + 90, _spawnPoint.rotation.z - angle);
+    }
+
+    private void SetFlightRotation()
+    {
+        transform.Rotate(0.2f, 0, 0, Space.Self);
     }
 
     private void OnCollisionStay(Collision collision)
@@ -59,6 +102,7 @@ public class Projectile : MonoBehaviour
         if(collision.gameObject.tag == "Projectile")
             return;
 
+        SetAnimationTrigger("hasLanded");
         Debug.Log("HasHit");
         isFlying = false;
     }
