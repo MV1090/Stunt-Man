@@ -1,4 +1,3 @@
-//using System.Numerics;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -6,19 +5,23 @@ public class Projectile : MonoBehaviour
     [SerializeField] float _initialVel;   
     [SerializeField] float _angle;
     [SerializeField] float _time;
-     [SerializeField] float _dragValue;
+    [SerializeField] float _dragValue;
 
     private float angle;
     private bool isFlying;   
-    private bool hasStopped;
-    
-    Aiming _projectileAim;    
+    public bool hasStopped;  
+
+    private Camera _cam;
+    Aiming _projectileAim;
     Transform _spawnPoint;
 
     private void Start()
     {        
         _projectileAim = GameObject.Find("TrajectoryLine").GetComponent<Aiming>();
         _spawnPoint = GameObject.Find("SpawnPoint").GetComponent<Transform>();
+        _cam = GetComponentInChildren<Camera>();
+
+        _cam.enabled = true;
 
         _initialVel = _projectileAim._initialVel;
         _angle = _projectileAim._angle;
@@ -28,10 +31,11 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject, 30);
 
         isFlying = true;
-        hasStopped = false;       
+        hasStopped = false;    
+        
     }
     void Update()
-    {
+    {               
         if (isFlying == false)
             return;
         SetFlightRotation();
@@ -40,14 +44,14 @@ public class Projectile : MonoBehaviour
     private void FixedUpdate()
     {
         if (hasStopped == true)
-            return;
+            _cam.enabled = false;
         else
         {
             _time += Time.deltaTime;
 
             if (isFlying == true)
             {
-                FlightMovement(_initialVel, angle, _time);                
+                FlightMovement(_initialVel, angle, _time);
             }
             else
             {
@@ -104,11 +108,6 @@ public class Projectile : MonoBehaviour
 
         SetAnimationTrigger("hasLanded");
         Debug.Log("HasHit");
-        isFlying = false;
-    }
-
- 
-
-
-
+        isFlying = false;        
+    } 
 }

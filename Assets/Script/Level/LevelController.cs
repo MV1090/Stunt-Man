@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class LevelController : MonoBehaviour
+public class LevelController : Singleton<LevelController>
 {
     public BaseLevel[] allLevels;
     public enum LevelSelector

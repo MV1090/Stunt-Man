@@ -7,11 +7,17 @@ public class Level1 : BaseLevel
     public override void InitState(LevelController ctx)
     {
         base.InitState(ctx);
-        level = LevelController.LevelSelector.Level_1;
+        level = LevelController.LevelSelector.Level_1;       
     }
 
     public override void SetNextLevel(LevelController.LevelSelector Level_2)
     {
         base.SetNextLevel(Level_2);
-    }   
+    }
+
+    public override void EnterState()
+    {
+        base.EnterState();
+        cameraRef.SetMaxSize(90);
+    }
 }

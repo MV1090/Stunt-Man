@@ -12,14 +12,13 @@ public class Aiming : MonoBehaviour
     [SerializeField] public float _initialVel;
     [SerializeField] Transform _spawnPoint;
     [SerializeField] float _movementSpeed;
-    private Camera _cam;
+    
 
     public float _time;
     float _finalAngle;
     void Start()
     {
-        _cam = Camera.main;
-        _movementSpeed = 50;
+      _movementSpeed = 50;
     }
         
     void Update()
@@ -69,8 +68,8 @@ public class Aiming : MonoBehaviour
 
     public void MinMaxVelocity()
     {
-        if (_initialVel > 75)
-            _initialVel = 75;
+        if (_initialVel > 50)
+            _initialVel = 50;
         if (_initialVel < 10)
             _initialVel = 10;
     }

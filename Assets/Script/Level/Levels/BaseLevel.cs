@@ -4,6 +4,7 @@ public class BaseLevel : MonoBehaviour
 {
     public LevelController.LevelSelector level;
     protected LevelController context;
+    public CameraController cameraRef;
 
     public virtual void InitState(LevelController ctx)
     {
@@ -17,7 +18,7 @@ public class BaseLevel : MonoBehaviour
     public virtual void ExitState()
     {
 
-    }
+    }    
 
     public virtual void SetNextLevel(LevelController.LevelSelector nextLevel)
     {

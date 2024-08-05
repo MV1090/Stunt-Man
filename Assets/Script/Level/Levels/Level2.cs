@@ -14,5 +14,10 @@ public class Level2 : BaseLevel
     {
         base.SetNextLevel(Level_3);
     }
-    
+
+    public override void EnterState()
+    {
+        base.EnterState();
+        cameraRef.SetMaxSize(90);
+    }
 }

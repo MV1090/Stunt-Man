@@ -2,45 +2,17 @@
     "name": "PlayerInput",
     "maps": [
         {
-            "name": "FirePosition",
-            "id": "af8edf46-d90a-4834-9799-91bfe9c0bf3a",
-            "actions": [
-                {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "6be1747f-65d1-43eb-8102-5607fa581456",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "cda75593-1b2a-474c-94c1-63c9858ad286",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
             "name": "Pause",
             "id": "1f3e1106-8d10-4ed6-b2aa-9bc5fb3862ae",
             "actions": [
                 {
                     "name": "Pause",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "ee778778-4f38-4e4c-b283-c17b4b824f09",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -80,6 +52,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Camera",
+            "id": "42e7c72d-157d-4e84-8b35-eb4fa8a596bd",
+            "actions": [
+                {
+                    "name": "Zoom",
+                    "type": "Button",
+                    "id": "cfc908b8-fd57-4d72-a06a-6dde0f6420bb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b7ac7c94-64b3-4b18-9610-86d26a6d3b18",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

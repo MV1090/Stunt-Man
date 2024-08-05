@@ -24,45 +24,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     ""name"": ""PlayerInput"",
     ""maps"": [
         {
-            ""name"": ""FirePosition"",
-            ""id"": ""af8edf46-d90a-4834-9799-91bfe9c0bf3a"",
-            ""actions"": [
-                {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
-                    ""id"": ""6be1747f-65d1-43eb-8102-5607fa581456"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""cda75593-1b2a-474c-94c1-63c9858ad286"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
             ""name"": ""Pause"",
             ""id"": ""1f3e1106-8d10-4ed6-b2aa-9bc5fb3862ae"",
             ""actions"": [
                 {
                     ""name"": ""Pause"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""ee778778-4f38-4e4c-b283-c17b4b824f09"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -106,19 +78,47 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Camera"",
+            ""id"": ""42e7c72d-157d-4e84-8b35-eb4fa8a596bd"",
+            ""actions"": [
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Button"",
+                    ""id"": ""cfc908b8-fd57-4d72-a06a-6dde0f6420bb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b7ac7c94-64b3-4b18-9610-86d26a6d3b18"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
 }");
-        // FirePosition
-        m_FirePosition = asset.FindActionMap("FirePosition", throwIfNotFound: true);
-        m_FirePosition_Newaction = m_FirePosition.FindAction("New action", throwIfNotFound: true);
         // Pause
         m_Pause = asset.FindActionMap("Pause", throwIfNotFound: true);
         m_Pause_Pause = m_Pause.FindAction("Pause", throwIfNotFound: true);
         // Shoot
         m_Shoot = asset.FindActionMap("Shoot", throwIfNotFound: true);
         m_Shoot_Fire = m_Shoot.FindAction("Fire", throwIfNotFound: true);
+        // Camera
+        m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
+        m_Camera_Zoom = m_Camera.FindAction("Zoom", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -176,52 +176,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     {
         return asset.FindBinding(bindingMask, out action);
     }
-
-    // FirePosition
-    private readonly InputActionMap m_FirePosition;
-    private List<IFirePositionActions> m_FirePositionActionsCallbackInterfaces = new List<IFirePositionActions>();
-    private readonly InputAction m_FirePosition_Newaction;
-    public struct FirePositionActions
-    {
-        private @PlayerInput m_Wrapper;
-        public FirePositionActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_FirePosition_Newaction;
-        public InputActionMap Get() { return m_Wrapper.m_FirePosition; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(FirePositionActions set) { return set.Get(); }
-        public void AddCallbacks(IFirePositionActions instance)
-        {
-            if (instance == null || m_Wrapper.m_FirePositionActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_FirePositionActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
-        }
-
-        private void UnregisterCallbacks(IFirePositionActions instance)
-        {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
-        }
-
-        public void RemoveCallbacks(IFirePositionActions instance)
-        {
-            if (m_Wrapper.m_FirePositionActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(IFirePositionActions instance)
-        {
-            foreach (var item in m_Wrapper.m_FirePositionActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_FirePositionActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public FirePositionActions @FirePosition => new FirePositionActions(this);
 
     // Pause
     private readonly InputActionMap m_Pause;
@@ -314,10 +268,52 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         }
     }
     public ShootActions @Shoot => new ShootActions(this);
-    public interface IFirePositionActions
+
+    // Camera
+    private readonly InputActionMap m_Camera;
+    private List<ICameraActions> m_CameraActionsCallbackInterfaces = new List<ICameraActions>();
+    private readonly InputAction m_Camera_Zoom;
+    public struct CameraActions
     {
-        void OnNewaction(InputAction.CallbackContext context);
+        private @PlayerInput m_Wrapper;
+        public CameraActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Zoom => m_Wrapper.m_Camera_Zoom;
+        public InputActionMap Get() { return m_Wrapper.m_Camera; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CameraActions set) { return set.Get(); }
+        public void AddCallbacks(ICameraActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CameraActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CameraActionsCallbackInterfaces.Add(instance);
+            @Zoom.started += instance.OnZoom;
+            @Zoom.performed += instance.OnZoom;
+            @Zoom.canceled += instance.OnZoom;
+        }
+
+        private void UnregisterCallbacks(ICameraActions instance)
+        {
+            @Zoom.started -= instance.OnZoom;
+            @Zoom.performed -= instance.OnZoom;
+            @Zoom.canceled -= instance.OnZoom;
+        }
+
+        public void RemoveCallbacks(ICameraActions instance)
+        {
+            if (m_Wrapper.m_CameraActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ICameraActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CameraActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CameraActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
     }
+    public CameraActions @Camera => new CameraActions(this);
     public interface IPauseActions
     {
         void OnPause(InputAction.CallbackContext context);
@@ -325,5 +321,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public interface IShootActions
     {
         void OnFire(InputAction.CallbackContext context);
+    }
+    public interface ICameraActions
+    {
+        void OnZoom(InputAction.CallbackContext context);
     }
 }
