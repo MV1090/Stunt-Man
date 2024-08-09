@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
-{    
-      
+{
+
     [SerializeField] float minXClamp;
     [SerializeField] float maxXClamp;
     [SerializeField] float minYClamp;
@@ -20,12 +20,16 @@ public class CameraMovement : MonoBehaviour
     private void Start()
     {
         parent = GetComponentInParent<Transform>();
+       
     }
     private void Update()
     {
         transform.rotation = Quaternion.Euler(parent.transform.rotation.x - parent.transform.rotation.x, 0, 0);
+
+        transform.position = new Vector3(parent.position.x, parent.position.y, parent.position.z);
+
         Vector3 cameraPosition = transform.position;
-        
+
         cameraPosition.x = Mathf.Clamp(transform.position.x, minXClamp, maxXClamp);
         cameraPosition.y = Mathf.Clamp(transform.position.y, minYClamp, maxYClamp);
 

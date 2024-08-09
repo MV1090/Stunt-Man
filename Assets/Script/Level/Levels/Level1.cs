@@ -19,5 +19,6 @@ public class Level1 : BaseLevel
     {
         base.EnterState();
         cameraRef.SetMaxSize(90);
+        target.SetPosition();
     }
 }
