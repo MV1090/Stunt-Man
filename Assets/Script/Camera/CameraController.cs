@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class CameraController : Singleton<CameraController>
 {
@@ -10,10 +9,6 @@ public class CameraController : Singleton<CameraController>
     private CameraState _cameraState;
 
     [SerializeField] Camera cameraRef;   
-    [SerializeField] float minXClamp;
-    [SerializeField] float maxXClamp;
-    [SerializeField] float minYClamp;
-    [SerializeField] float maxYClamp;
         
     private float smoothTime;
 
@@ -30,8 +25,7 @@ public class CameraController : Singleton<CameraController>
     public float cameraSpeed;
        
     Vector3 cameraPosition;
-
-    // Start is called before the first frame update
+  
     void Start()
     {       
         _cameraState = CameraState.ZoomedIn;
@@ -41,8 +35,6 @@ public class CameraController : Singleton<CameraController>
         yOffset = 6.92f;
 
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (_cameraState == CameraState.FollowState)
@@ -50,10 +42,12 @@ public class CameraController : Singleton<CameraController>
             if (stuntman == null)
             {
                 ResetOffSet();
-                stuntman = GameObject.Find("StuntMan(Clone)");                
+                stuntman = GameObject.Find("StuntMan(Clone)");              
             }
             else
             {
+                if (stuntman.GetComponent<Projectile>()._projectileState != Projectile.ProjectileState.InFlight)
+                    return;
                 transform.position = new Vector3(stuntman.transform.position.x + xOffset, stuntman.transform.position.y + yOffset, stuntman.transform.position.z - 10);
                 XOffSet();
                 YOffSet();
@@ -71,7 +65,6 @@ public class CameraController : Singleton<CameraController>
             ZoomedOut();
         }
     }
-
     public void ToggleCameraZoom(InputAction.CallbackContext ctx)
     {
         if (_cameraState == CameraState.FollowState) return;
@@ -82,12 +75,10 @@ public class CameraController : Singleton<CameraController>
         else
             _cameraState = CameraState.ZoomedIn;
     }
-
     public void SetMaxSize(float cameraSize)
     {
         maxOrthographicSize = cameraSize;
     }
-
     private void ZoomedIn()
     {
         cameraRef.orthographicSize = minOrthographicSize;
@@ -96,7 +87,6 @@ public class CameraController : Singleton<CameraController>
         cameraPosition.y = cameraRef.orthographicSize;
         cameraRef.transform.position = new Vector3(cameraPosition.x, cameraPosition.y, -10);
     }
-
     private void ZoomedOut()
     {
         cameraRef.orthographicSize = maxOrthographicSize;
@@ -112,12 +102,10 @@ public class CameraController : Singleton<CameraController>
 
         _cameraState = CameraState.FollowState;
     }
-
     public void SetZoomedIn()
     {
         _cameraState = CameraState.ZoomedIn;
     }
-
     private void XOffSet()
     {
         if (xOffset > 0f)
@@ -126,7 +114,6 @@ public class CameraController : Singleton<CameraController>
         if (xOffset < 0f)
             xOffset = 0f;
     }
-
     private void YOffSet()
     {
         if(yOffset > 5)
@@ -135,7 +122,6 @@ public class CameraController : Singleton<CameraController>
         if(yOffset < 5)
             yOffset = 5;
     }
-
     private void ResetOffSet()
     {
         xOffset = 14.35f;

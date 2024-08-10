@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 11270738}
   m_Layer: 0
   m_Name: GameObject
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76304,7 +76304,7 @@ MonoBehaviour:
   minYClamp: 9
   maxYClamp: 1000
   stuntman: {fileID: 0}
-  cameraSpeed: 0.04
+  cameraSpeed: 0.001
 --- !u!1 &538323437
 GameObject:
   m_ObjectHideFlags: 0
@@ -79382,7 +79382,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 2.9084966, y: 0.15, z: 0.2}
-  m_Center: {x: -0.046365485, y: 0.7426097, z: 0}
+  m_Center: {x: -0.046365485, y: 0.5, z: 0}
 --- !u!212 &2105098109
 SpriteRenderer:
   m_ObjectHideFlags: 0

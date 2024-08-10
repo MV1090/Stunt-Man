@@ -11,10 +11,7 @@ public class Shoot : MonoBehaviour
     [SerializeField] Aiming angleOfFire;
     [SerializeField] ParticleSystem smoke;
     Quaternion target;
-    private void Start()
-    {
-        
-    }
+    
     void Update()
     {
         target = Quaternion.Euler(angleOfFire._angle * -1, 90 ,0);              

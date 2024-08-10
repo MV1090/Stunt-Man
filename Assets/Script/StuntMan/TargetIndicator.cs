@@ -9,8 +9,7 @@ public class TargetIndicator : MonoBehaviour
     {
         target = GameObject.Find("Target").GetComponent<Transform>();
     }
-
-    // Update is called once per frame
+   
     void Update()
     {
         Vector3 dir = target.position - transform.position;

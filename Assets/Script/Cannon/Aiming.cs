@@ -34,38 +34,15 @@ public class Aiming : MonoBehaviour
 
         setAngle();
         setVelocity();
-        MinMaxVelocity();           
-        //DrawPath(_initialVel, _finalAngle, _step);
-    }
-
-    //private void DrawPath(float initialVel, float angle, float step)
-    //{
-    //    step = Mathf.Max(0.01f, step);
-    //    float totalTime = 0.5f;
-        
-    //    _lr.positionCount = (int)((int)(totalTime / step) + 2f);
-    //    int count = 0;
-    //    for(float i = 0; i < totalTime; i += step)
-    //    {
-    //        float xPos = initialVel * i * Mathf.Cos(angle);
-    //        float yPos = initialVel * i * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(i, 2);
-    //        _lr.SetPosition(count, _spawnPoint.position + new Vector3(xPos, yPos, 0));
-    //        count++;            
-    //    }
-
-    //    float xPosFinal = initialVel * totalTime * Mathf.Cos(angle);
-    //    float yPosFinal = initialVel * totalTime * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(totalTime, 2);
-    //    _lr.SetPosition(count, _spawnPoint.position + new Vector3(xPosFinal, yPosFinal, 0));
-    //}
+        MinMaxVelocity();                   
+    }   
 
     public void setAngle()
     {
         if (Input.GetKey(KeyCode.UpArrow))
             _angle += _movementSpeed * Time.deltaTime;
         if (Input.GetKey(KeyCode.DownArrow))
-            _angle -= _movementSpeed * Time.deltaTime;
-
-        //_finalAngle = _angle * Mathf.Deg2Rad;
+            _angle -= _movementSpeed * Time.deltaTime;        
     }
 
     public void setVelocity()
