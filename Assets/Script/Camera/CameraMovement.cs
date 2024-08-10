@@ -9,6 +9,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] float maxXClamp;
     [SerializeField] float minYClamp;
     [SerializeField] float maxYClamp;
+    [SerializeField] Transform projectile;
 
     [Range(0.0f, 1.0f)]
     public float smoothTime;

@@ -4,7 +4,7 @@ public class InputManager : MonoBehaviour
 {
  
     PlayerInput input;
-    public PauseMenu context;
+    
     public Shoot cannon;
     public CameraController cameraZoom;
     public void Awake()

@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class MenuController : MonoBehaviour
+public class MenuController : Singleton<MenuController>
 {
     public BaseMenu[] allMenus; 
     public enum MenuStates
     {
-        MainMenu, Settings, Pause, GameState
+        MainMenu, Settings, WinScreen, GameState
     }
 
     private BaseMenu currentState;
@@ -72,15 +72,5 @@ public class MenuController : MonoBehaviour
             SetActiveState(menuStack.Peek(), true);
         }
     }
-
-    public void Pause()
-    {
-        if (currentState == menuDictionary[MenuStates.GameState])
-            SetActiveState(MenuStates.Pause);
-
-        else if(currentState == menuDictionary[MenuStates.Pause])
-        {
-            SetActiveState(MenuStates.GameState);
-        }            
-    }
+    
 }

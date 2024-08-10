@@ -18,7 +18,7 @@ public class Level1 : BaseLevel
     public override void EnterState()
     {
         base.EnterState();
-        cameraRef.SetMaxSize(90);
+        CameraController.Instance.SetMaxSize(90);
         target.SetPosition();
     }
 }

@@ -14,15 +14,20 @@ public class CameraController : Singleton<CameraController>
     [SerializeField] float maxXClamp;
     [SerializeField] float minYClamp;
     [SerializeField] float maxYClamp;
-
-    [Range(0.0f, 1.0f)]
-    public float smoothTime;
+        
+    private float smoothTime;
 
     Vector3 velocity = Vector3.zero;
 
     private float minOrthographicSize;
     private float maxOrthographicSize;
-    public GameObject stuntman;  
+    public GameObject stuntman;
+
+    private float xOffset;
+    private float yOffset;
+
+    [Range(0.0f, 1.0f)]
+    public float cameraSpeed;
        
     Vector3 cameraPosition;
 
@@ -30,7 +35,11 @@ public class CameraController : Singleton<CameraController>
     void Start()
     {       
         _cameraState = CameraState.ZoomedIn;
-        minOrthographicSize = 5;
+        minOrthographicSize = 10;
+
+        xOffset = 14.35f;
+        yOffset = 6.92f;
+
     }
 
     // Update is called once per frame
@@ -40,19 +49,15 @@ public class CameraController : Singleton<CameraController>
         {
             if (stuntman == null)
             {
-                stuntman = GameObject.Find("Falling(Clone)");
-                if (stuntman != null)
-                {
-                    if (stuntman.GetComponent<Projectile>().hasStopped == true)
-                    {
-                        cameraRef.enabled = true;
-                    }
-                    else
-                    {
-                        cameraRef.enabled = false;
-                        Debug.Log("follow state set");
-                    }
-                }
+                ResetOffSet();
+                stuntman = GameObject.Find("StuntMan(Clone)");                
+            }
+            else
+            {
+                transform.position = new Vector3(stuntman.transform.position.x + xOffset, stuntman.transform.position.y + yOffset, stuntman.transform.position.z - 10);
+                XOffSet();
+                YOffSet();
+                smoothTime += cameraSpeed;
             }
         }
         
@@ -108,6 +113,35 @@ public class CameraController : Singleton<CameraController>
         _cameraState = CameraState.FollowState;
     }
 
+    public void SetZoomedIn()
+    {
+        _cameraState = CameraState.ZoomedIn;
+    }
+
+    private void XOffSet()
+    {
+        if (xOffset > 0f)
+            xOffset -= Time.deltaTime * smoothTime;
+
+        if (xOffset < 0f)
+            xOffset = 0f;
+    }
+
+    private void YOffSet()
+    {
+        if(yOffset > 5)
+            yOffset -= Time.deltaTime * smoothTime;
+
+        if(yOffset < 5)
+            yOffset = 5;
+    }
+
+    private void ResetOffSet()
+    {
+        xOffset = 14.35f;
+        yOffset = 6.92f;
+        smoothTime = 1f;
+    }
 
 
 }

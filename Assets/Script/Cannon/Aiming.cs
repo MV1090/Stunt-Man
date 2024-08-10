@@ -1,53 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityEngine.UIElements;
 
 public class Aiming : MonoBehaviour
 {
     //Start is called before the first frame update
-    [SerializeField] LineRenderer _lr;
-    [SerializeField] float _step;
+    // [SerializeField] LineRenderer _lr;
+    // [SerializeField] float _step;
+    // public float _time;
+    // float _finalAngle;
+
+
     [SerializeField] public float _angle;
     [SerializeField] public float _initialVel;
     [SerializeField] Transform _spawnPoint;
     [SerializeField] float _movementSpeed;
-    
+    [SerializeField] float _minVel;
+    [SerializeField] float _maxVel;
 
-    public float _time;
-    float _finalAngle;
+    public bool hasFired;
+  
     void Start()
     {
-      _movementSpeed = 50;
+        hasFired = false;
     }
         
     void Update()
-    {                 
+    {
+        if (hasFired == true)
+            return;
+
         setAngle();
         setVelocity();
         MinMaxVelocity();           
-        DrawPath(_initialVel, _finalAngle, _step);
+        //DrawPath(_initialVel, _finalAngle, _step);
     }
 
-    private void DrawPath(float initialVel, float angle, float step)
-    {
-        step = Mathf.Max(0.01f, step);
-        float totalTime = 0.5f;
+    //private void DrawPath(float initialVel, float angle, float step)
+    //{
+    //    step = Mathf.Max(0.01f, step);
+    //    float totalTime = 0.5f;
         
-        _lr.positionCount = (int)((int)(totalTime / step) + 2f);
-        int count = 0;
-        for(float i = 0; i < totalTime; i += step)
-        {
-            float xPos = initialVel * i * Mathf.Cos(angle);
-            float yPos = initialVel * i * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(i, 2);
-            _lr.SetPosition(count, _spawnPoint.position + new Vector3(xPos, yPos, 0));
-            count++;            
-        }
+    //    _lr.positionCount = (int)((int)(totalTime / step) + 2f);
+    //    int count = 0;
+    //    for(float i = 0; i < totalTime; i += step)
+    //    {
+    //        float xPos = initialVel * i * Mathf.Cos(angle);
+    //        float yPos = initialVel * i * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(i, 2);
+    //        _lr.SetPosition(count, _spawnPoint.position + new Vector3(xPos, yPos, 0));
+    //        count++;            
+    //    }
 
-        float xPosFinal = initialVel * totalTime * Mathf.Cos(angle);
-        float yPosFinal = initialVel * totalTime * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(totalTime, 2);
-        _lr.SetPosition(count, _spawnPoint.position + new Vector3(xPosFinal, yPosFinal, 0));
-    }
+    //    float xPosFinal = initialVel * totalTime * Mathf.Cos(angle);
+    //    float yPosFinal = initialVel * totalTime * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(totalTime, 2);
+    //    _lr.SetPosition(count, _spawnPoint.position + new Vector3(xPosFinal, yPosFinal, 0));
+    //}
 
     public void setAngle()
     {
@@ -55,7 +64,8 @@ public class Aiming : MonoBehaviour
             _angle += _movementSpeed * Time.deltaTime;
         if (Input.GetKey(KeyCode.DownArrow))
             _angle -= _movementSpeed * Time.deltaTime;
-        _finalAngle = _angle * Mathf.Deg2Rad;
+
+        //_finalAngle = _angle * Mathf.Deg2Rad;
     }
 
     public void setVelocity()
@@ -68,10 +78,10 @@ public class Aiming : MonoBehaviour
 
     public void MinMaxVelocity()
     {
-        if (_initialVel > 50)
-            _initialVel = 50;
-        if (_initialVel < 10)
-            _initialVel = 10;
+        if (_initialVel > _maxVel)
+            _initialVel = _maxVel;
+        if (_initialVel < _minVel)
+            _initialVel = _minVel;
     }
    
 }

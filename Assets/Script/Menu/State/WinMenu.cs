@@ -1,13 +1,14 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class PauseMenu : BaseMenu 
+
+public class WinMenu : BaseMenu
 {
     public override void InitState(MenuController ctx)
     {
         base.InitState(ctx);
-        state = MenuController.MenuStates.Pause;
+        state = MenuController.MenuStates.WinScreen;
     }
+
     public override void EnterState()
     {
         base.EnterState();
@@ -17,20 +18,17 @@ public class PauseMenu : BaseMenu
     public override void ExitState()
     {
         base.ExitState();
-        gameObject.SetActive(false);
         Time.timeScale = 1.0f;
     }
-    public void JumpToSettings()
-    {
-        context.SetActiveState(MenuController.MenuStates.Settings);
-    }
+
     public void JumpToMainMenu()
     {
         context.SetActiveState(MenuController.MenuStates.MainMenu);
     }
 
-    public void Pause(InputAction.CallbackContext ctx)
+    public void JumpToGameState()
     {
-        context.Pause();
+        context.SetActiveState(MenuController.MenuStates.GameState);
     }
+
 }

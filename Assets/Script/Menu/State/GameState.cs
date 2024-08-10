@@ -9,5 +9,10 @@ public class GameState : BaseMenu
         base.InitState(ctx);
         state = MenuController.MenuStates.GameState;
     }
+    public override void EnterState()
+    {
+        base.EnterState();
+        Time.timeScale = 1.0f;
+    }
 
 }

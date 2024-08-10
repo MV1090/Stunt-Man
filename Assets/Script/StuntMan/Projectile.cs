@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -9,29 +10,29 @@ public class Projectile : MonoBehaviour
 
     private float angle;
     private bool isFlying;   
-    public bool hasStopped;  
+    public bool hasStopped;
+    private bool hitTarget;
 
-    private Camera _cam;
+    //private Camera _cam;
     Aiming _projectileAim;
     Transform _spawnPoint;
 
     private void Start()
     {        
-        _projectileAim = GameObject.Find("TrajectoryLine").GetComponent<Aiming>();
+        _projectileAim = GameObject.Find("AimController").GetComponent<Aiming>();
         _spawnPoint = GameObject.Find("SpawnPoint").GetComponent<Transform>();
-        _cam = GetComponentInChildren<Camera>();
-
-        _cam.enabled = true;
+       // _cam = GetComponentInChildren<Camera>();
+ 
+        //_cam.enabled = true;
 
         _initialVel = _projectileAim._initialVel;
         _angle = _projectileAim._angle;
 
-         angle = _angle * Mathf.Deg2Rad;             
-
-        Destroy(gameObject, 30);
-
+         angle = _angle * Mathf.Deg2Rad;         
+              
         isFlying = true;
-        hasStopped = false;    
+        hasStopped = false;   
+        hitTarget = false;
         
     }
     void Update()
@@ -43,8 +44,18 @@ public class Projectile : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (hitTarget == true)
+            return;
+
         if (hasStopped == true)
-            _cam.enabled = false;
+        {
+            if (_projectileAim.hasFired == false)
+                return;
+            else
+            StartCoroutine(LandedDelay());
+        }
+           
+
         else
         {
             _time += Time.deltaTime;
@@ -106,8 +117,37 @@ public class Projectile : MonoBehaviour
         if(collision.gameObject.tag == "Projectile")
             return;
 
+        if (collision.gameObject.tag == "Target")
+        {
+            SetAnimationTrigger("hitTarget");            
+            hitTarget = true;
+            SetSlideRotation();     
+        }
+
+
         SetAnimationTrigger("hasLanded");
         Debug.Log("HasHit");
         isFlying = false;        
     } 
+
+    private IEnumerator LandedDelay()
+    {        
+        yield return new WaitForSeconds(2);
+       ResetProjectile();
+    }
+
+    public void winner()
+    {
+        MenuController.Instance.SetActiveState(MenuController.MenuStates.WinScreen);
+        ResetProjectile();       
+    }
+    
+    private void ResetProjectile()
+    {
+        CameraController.Instance.SetZoomedIn();
+       // _cam.enabled = false;
+        _projectileAim.hasFired = false;
+        Destroy(gameObject);
+    }
+
 }

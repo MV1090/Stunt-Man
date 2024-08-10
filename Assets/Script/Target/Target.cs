@@ -15,8 +15,8 @@ public class Target : MonoBehaviour
     
     public void SetPosition()
     {
-        spawnPosition = Random.Range(30, 250);
-        transform.position = new Vector3(spawnPosition, 4.5f, 0);
+        spawnPosition = Random.Range(50, 250);
+        transform.position = new Vector3(spawnPosition, 2.2f, 1);
     }
    
 

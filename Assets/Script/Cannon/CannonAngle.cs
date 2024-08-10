@@ -13,8 +13,7 @@ public class CannonAngle : MonoBehaviour
     {
         
     }
-
-    // Update is called once per frame
+        
     void Update()
     {
         Quaternion target = Quaternion.Euler(_projectileAim._angle * -1, 90, 0); 
