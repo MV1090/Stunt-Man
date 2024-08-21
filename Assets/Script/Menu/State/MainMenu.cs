@@ -20,7 +20,6 @@ public class MainMenu : BaseMenu
     public override void ExitState()
     {
         base.ExitState();
-       // gameObject.SetActive(false);
         Time.timeScale = 1.0f;        
     }
 

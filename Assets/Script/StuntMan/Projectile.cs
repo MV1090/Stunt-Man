@@ -42,7 +42,7 @@ public class Projectile : MonoBehaviour
 
         if (_projectileState == ProjectileState.InFlight)
         {
-            FlightMovement(_initialVel, angle, _time);
+            FlightMovement();
             SetFlightRotation();
         }
 
@@ -57,19 +57,19 @@ public class Projectile : MonoBehaviour
         if (_projectileState == ProjectileState.Sliding)
         {
             SetSlideRotation();
-            SlideMovement(_initialVel, angle, _time);
+            SlideMovement();
             SetDrag();
         }    
     }
-    private void FlightMovement(float initialVel, float angle, float time)
+    private void FlightMovement()
     {             
-        float xPos = initialVel * time * Mathf.Cos(angle);
-        float yPos = initialVel * time * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(time, 2);
+        float xPos = _initialVel * _time * Mathf.Cos(angle);
+        float yPos = _initialVel * _time * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(_time, 2);
         transform.position = _spawnPoint.position + new Vector3(xPos, yPos, 0);
     }
-    private void SlideMovement(float initialVel, float angle, float time)
+    private void SlideMovement()
     {
-        float xPos = initialVel * time * Mathf.Cos(angle);               
+        float xPos = _initialVel * _time * Mathf.Cos(angle);               
         Vector3 nextPosition = _spawnPoint.position + new Vector3(xPos, -1.2f, 0);
         
         if (nextPosition.x < transform.position.x)
